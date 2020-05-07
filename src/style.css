@@ -52,7 +52,7 @@ td {
 }
 
 .scores {
-  margin-right: 10px;
+  margin-right: 50px;
   display: flex;
   flex-direction: row;
   justify-content: start;
@@ -90,4 +90,11 @@ td {
   justify-content: space-around;
   align-items: flex-end;
   margin-bottom: 5px;
+}
+
+#cookies {
+  position: absolute;
+  padding-right: 50px;
+  padding-left: 35px;
+  padding-bottom: 9px;
 }
