@@ -509,8 +509,8 @@ function lookforCookies(pacman, cookies) {
  * @returns {Boolean}
  */
 function scoreGame(valor) {
-  prueba = document.getElementById("cookies");
-  prueba.innerHTML = score;
+  puntaje = document.getElementById("cookies");
+  puntaje.innerHTML = score;
   score += 10;
 }
 
