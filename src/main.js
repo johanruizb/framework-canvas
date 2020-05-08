@@ -509,6 +509,7 @@ function lookforCookies(pacman, cookies) {
  * @returns {Boolean}
  */
 function scoreGame(valor) {
+  console.log(score / 10 + " galletas comidas");
   puntaje = document.getElementById("cookies");
   puntaje.innerHTML = score;
   score += 10;

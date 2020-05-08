@@ -5,4 +5,27 @@ body, html {
   background-size: 100% 100%;
   user-select: none;
   margin: 0;
+  overflow: hidden;
+}
+
+.leyenda {
+  position: fixed;
+  color: #fff;
+  right: 0;
+  overflow-y: scroll;
+  width: 90%;
+  height: 80%;
+  padding: 50px;
+}
+
+.leyenda::-webkit-scrollbar {
+  width: 6px;
+}
+
+.leyenda::-webkit-scrollbar-track {
+  background-color: rgba(240, 240, 240, 0.3);
+}
+
+.leyenda::-webkit-scrollbar-thumb {
+  background-color: #142b40;
 }
