@@ -393,7 +393,6 @@ function sketchProc(processing) {
       vidas.src = "images/vidas.png"
     }
     if (world.pacman.lifes == 0) {
-      enfriamiento.innerHTML = "Game!";
       return make(world, {});
     }
     //-----------Enfriamiento------------

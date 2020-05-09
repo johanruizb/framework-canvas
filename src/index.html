@@ -36,6 +36,7 @@
     </svg>
   </div>
 </div>
+
 <div class="cooldown">
   <span id="cd"></span>
 </div>
@@ -50,6 +51,8 @@
 <script src="js/businessLogic.js"></script>
 <script src="js/MapFunctions.js"></script>
 <script src="main.js"></script>
+
+
 
 
 <svg xmlns="http://www.w3.org/2000/svg" width="27.778" height="30" viewBox="0 0 27.778 30">
@@ -74,3 +77,14 @@
     <circle id="Elipse_10" data-name="Elipse 10" cx="1.458" cy="1.458" r="1.458" transform="translate(-328.389 240.667)" />
   </g>
 </svg>
+
+<audio id="yourAudioTag" src="sounds/clock.mp3" muted loop>
+  <script>
+    document.getElementById('yourAudioTag').click();
+    document.addEventListener('click', event => {
+      console.log('lo quese');
+      var audio = document.getElementById('yourAudioTag');
+      audio.muted = false;
+      audio.play();
+    });
+  </script>
