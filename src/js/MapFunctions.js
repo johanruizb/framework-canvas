@@ -50,8 +50,7 @@ function CookiesGenerator(world) {
       const cookie = first(cookies);
 
       // valida si la ubicación colisiona con el laberinto o  con pacman
-      if (GetCollition(world.mapCoors, { y1: cookie.y - 20, y2: cookie.y + 20, x1: cookie.x - 20, x2: cookie.x + 20 }) ||
-         GetCollition([[world.pacman.x, world.pacman.y]], { y1: cookie.y - 20, y2: cookie.y + 20, x1: cookie.x - 20, x2: cookie.x + 20 })) {
+      if (GetCollition(world.mapCoors, { y1: cookie.y - 20, y2: cookie.y + 20, x1: cookie.x - 20, x2: cookie.x + 20 })) {
 
          // retorna la lista de galletas aprobadas para dibujar cuando llega al final del canvas
          if (cookie.x + 20 === width && cookie.y + 20 === height) {
@@ -82,9 +81,10 @@ function CookiesGenerator(world) {
    }
 
    // Sólo se ejecuta al inicio del juego
-   if (length(world.cookies) == 0) {
+   if (length(world.cookies) == 0 && world.current_score == 0) {
       const cookies = CookieCreator(world.mapCoors, world.width - 1, world.height - 1);
-      return Object.assign({}, world, { cookies });
+      const cookiesMap =cookies;
+      return Object.assign({}, world, { cookies, cookiesMap });
    }
 
    return world;
@@ -110,7 +110,6 @@ function CookiesPainter(cookies = [], processing) {
    return CookiesPainter(rest(cookies), processing);
 }
 
-
 // SÓLO PARA LA CREACIÓN DEL JUEGO
 /**
  * @author Hernando H
@@ -121,7 +120,7 @@ function CookiesPainter(cookies = [], processing) {
  */
 function MapDownloader() {
    const element = document.createElement('a');
-   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(localStorage.getItem('map')));
+   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(processingInstance.state.cookiesMap)));
    element.setAttribute('download', 'map.json');
    element.style.display = 'none';
    document.body.appendChild(element);

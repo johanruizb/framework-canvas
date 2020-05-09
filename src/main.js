@@ -1,10 +1,13 @@
-let score = 0;
+let blue = null;
+let red = null;
+let yellow = null;
+let rose = null;
 
 function sketchProc(processing) {
 
   /** configuración inicial */
   processing.setup = function() {
-    processing.frameRate(25);
+    processing.frameRate(10);
     processing.size(481, 481);
     processing.state = {
       width: processing.width,
@@ -102,21 +105,6 @@ function sketchProc(processing) {
         [50, 10],
         [30, 10],
         [70, 10],
-        [210, 290],
-        [230, 290],
-        [250, 290],
-        [270, 290],
-        [290, 290],
-        [190, 290],
-        [190, 270],
-        [190, 250],
-        [190, 230],
-        [290, 230],
-        [290, 270],
-        [290, 270],
-        [290, 250],
-        [190, 230],
-        [190, 230],
         [190, 30],
         [190, 50],
         [210, 50],
@@ -173,8 +161,6 @@ function sketchProc(processing) {
         [250, 170],
         [270, 170],
         [290, 170],
-        [210, 230],
-        [270, 230],
         [130, 270],
         [130, 290],
         [130, 310],
@@ -211,48 +197,71 @@ function sketchProc(processing) {
         [410, 390],
         [410, 370],
         [410, 350],
-        [410, 350]
+        [410, 350],
+        [290, 290],
+        [210, 290],
+        [230, 290],
+        [250, 290],
+        [270, 290],
+        [190, 290],
+        [190, 230],
+        [210, 230],
+        [270, 230],
+        [290, 230],
+        [290, 230],
+        [290, 270],
+        [290, 250],
+        [190, 250],
+        [190, 270],
+        [190, 270]
       ],
       current_score: 0,
-      hight_score: 0,
-      cookies: [],
+      cookies: [], // coordenadas de las galletas existentes en el mapa
+      cookiesMap: [], // coordenadas permanentes para varios usos
       pacman: {
         mouth: false,
         apertura: 20,
         x: 240,
-        y: 400,
+        y: 140,
+        oldx: null,
+        oldy: null,
         direction: 0,
         NextDirection: 0,
         rotate: 0,
-        gluttony_mode: false
+        gluttony_mode: false,
+        lifes: 3
       },
       blue: {
         x: 240,
-        y: 240,
+        y: 260,
+        oldx: null,
+        oldy: null,
         direction: 0,
         NextDirection: 0,
-        scream_mode: false
       },
       yellow: {
         x: 240,
-        y: 240,
+        y: 260,
+        oldx: null,
+        oldy: null,
         direction: 0,
         NextDirection: 0,
-        scream_mode: false
       },
       red: {
         x: 240,
-        y: 240,
+        y: 260,
+        oldx: null,
+        oldy: null,
         direction: 0,
         NextDirection: 0,
-        scream_mode: false
       },
       rose: {
         x: 240,
-        y: 240,
+        y: 260,
+        oldx: null,
+        oldy: null,
         direction: 0,
         NextDirection: 0,
-        scream_mode: false
       },
       constructor: {
         enable: false,
@@ -260,6 +269,11 @@ function sketchProc(processing) {
       }
     };
   }
+
+  blue = processing.loadImage("images/blue.png");
+  red = processing.loadImage("images/red.png");
+  yellow = processing.loadImage("images/yellow.png");
+  rose = processing.loadImage("images/rose.png");
 
   // Dibuja algo en el canvas. Aqui se pone todo lo que quieras pintar
   processing.drawGame = function(world) {
@@ -271,11 +285,11 @@ function sketchProc(processing) {
 
     // SÓLO PARA LA CREACIÓN DEL JUEGO
     // dibuja una cuadrícula guía
-    for (let y = 0; y < 480; y += 40) {
-      for (let x = 0; x < 480; x += 40) {
-        processing.rect(x, y, 40, 40);
-      }
-    }
+    // for (let y = 0; y < 480; y += 40) {
+    //    for (let x = 0; x < 480; x += 40) {
+    //       processing.rect(x, y, 40, 40);
+    //    }
+    // }
 
     processing.noStroke();
 
@@ -284,15 +298,30 @@ function sketchProc(processing) {
     // galletas
     CookiesPainter(world.cookies, processing);
 
+    // portal
+    // processing.fill(0, 0, 0);
+    // processing.ellipse(240, 240, 30, 30);
+    // processing.fill(20, 40, 60);
+    // processing.ellipse(240, 240, 25, 25);
+    // processing.fill(20, 70, 120);
+    // processing.ellipse(240, 240, 20, 20);
+    // processing.fill(20, 40, 60);
+    // processing.ellipse(240, 240, 10, 10);
+    // processing.fill(0, 0, 0);
+    // processing.ellipse(240, 240, 5, 5);
+
+    processing.image(blue, world.blue.x - 15, world.blue.y - 14);
+    // processing.image(red, world.red.x - 15, world.red.y - 14);
+    // processing.image(yellow, world.yellow.x - 15, world.yellow.y - 14);
+    // processing.image(rose, world.rose.x - 15, world.rose.y - 14);
+
     // pacman
     processing.fill(255, 250, 90);
     processing.translate(world.pacman.x, world.pacman.y);
     processing.rotate(processing.radians(world.pacman.rotate));
     // movimiento de la boca de pacman
     processing.arc(0, 0, 30, 30, processing.radians(world.pacman.apertura), processing.radians(360 - world.pacman.apertura));
-
   }
-
 
   /**
    * @author Hernando H
@@ -306,12 +335,65 @@ function sketchProc(processing) {
   function* OnTicGenerator() {
     yield CookiesGenerator;
     yield MovingMouth;
+    yield ChaseMode;
     yield ChangeDirection;
     yield ChangePosition;
     return maxScore;
   }
   // Actualiza el mundo despues de cada frame. En este ejemplo, no cambia nada, solo retorna una copia del mundo
   processing.onTic = function func(world, done = false, fn = OnTicGenerator()) {
+    //------------Restar vidas y reposicionar elementos del juego------------
+    const initialPosition = {
+      mouth: false,
+      apertura: 20,
+      x: 240,
+      y: 140,
+      oldx: null,
+      oldy: null,
+      direction: 0,
+      NextDirection: 0,
+      rotate: 0,
+      gluttony_mode: false,
+      lifes: world.pacman.lifes
+    }
+    const vidas = document.getElementById('img_cherries');
+    if (world.blue.x == world.pacman.x && world.blue.y == world.pacman.y) {
+      console.warn(world.pacman.lifes - 1 + " vidas");
+      return make(world, {
+        pacman: {
+          mouth: false,
+          apertura: 20,
+          x: 240,
+          y: 140,
+          oldx: null,
+          oldy: null,
+          direction: 0,
+          NextDirection: 0,
+          rotate: 0,
+          gluttony_mode: false,
+          lifes: world.pacman.lifes - 1
+        },
+        blue: {
+          x: 240,
+          y: 260,
+          oldx: null,
+          oldy: null,
+          direction: 0,
+          NextDirection: 0,
+        }
+      })
+    }
+    if (world.pacman.lifes == 2) {
+      vidas.src = "images/vidas_2.png"
+    }
+    if (world.pacman.lifes == 1) {
+      vidas.src = "images/vidas.png"
+    }
+    if (world.pacman.lifes == 0) {
+      return make(world, {})
+    }
+    /////////////////////////
+
     if (done) return world;
     const next = fn.next();
     return func(next.value(world), next.done, fn);
@@ -327,8 +409,8 @@ function sketchProc(processing) {
           enable: true
         })
       });
-      let c = mapCoors[mapCoors.length - 1];
-      mapCoors.push([c[0], c[1]])
+      let c = world.mapCoors[world.mapCoors.length - 1];
+      world.mapCoors.push([c[0], c[1]])
 
       // Desactiva el modo contructor de laberintos
     } else if (event == 10) {
@@ -338,8 +420,8 @@ function sketchProc(processing) {
 
       // Elimina un elemento del laberinto
     } else if (indexOf([109, 189], event) > -1 && processing.state.constructor.enable) {
-      let c = mapCoors[mapCoors.length - 1];
-      mapCoors = listDeleter(mapCoors, c);
+      let c = world.mapCoors[world.mapCoors.length - 1];
+      world.mapCoors = listDeleter(world.mapCoors, c);
     }
 
     // Valida si se está contruyendo o jugando
@@ -350,7 +432,6 @@ function sketchProc(processing) {
         pacman: SetNextDirection(world.pacman, event)
       });
     } else {
-
       // se pasa la intención de parar los movimientos de pacman
       world = make(world, {
         pacman: SetNextDirection(world.pacman, 0)
@@ -361,23 +442,20 @@ function sketchProc(processing) {
       if (event == 37) {
         let c = world.mapCoors[world.mapCoors.length - 1];
         world.mapCoors.pop();
-        world.mapCoors.push([c[0] - 20, c[1]])
-        localStorage.setItem('map', world.mapCoors.toString())
+        world.mapCoors.push([c[0] - 20, c[1]]);
       } else if (event == 38) {
         let c = world.mapCoors[world.mapCoors.length - 1];
         world.mapCoors.pop();
-        world.mapCoors.push([c[0], c[1] - 20])
+        world.mapCoors.push([c[0], c[1] - 20]);
       } else if (event == 39) {
         let c = world.mapCoors[world.mapCoors.length - 1];
         world.mapCoors.pop();
-        world.mapCoors.push([c[0] + 20, c[1]])
+        world.mapCoors.push([c[0] + 20, c[1]]);
       } else if (event == 40) {
         let c = world.mapCoors[world.mapCoors.length - 1];
         world.mapCoors.pop();
-        world.mapCoors.push([c[0], c[1] + 20])
+        world.mapCoors.push([c[0], c[1] + 20]);
       }
-      localStorage.setItem('map', JSON.stringify(world.mapCoors));
-
     }
     return world;
   }
@@ -404,11 +482,8 @@ function sketchProc(processing) {
   // Esta es la función que pinta todo. Se ejecuta 60 veces por segundo.
   // No cambie esta función. Su código debe ir en drawGame
   processing.draw = function() {
-
     processing.drawGame(processing.state);
     processing.state = processing.onTic(processing.state);
-    processing.state.cookies = listDelete(processing.state.cookies, lookPositionCookies(processing.state.pacman, processing.state.cookies, 0));
-
   };
 
   // Esta función se ejecuta cada vez que presionamos una tecla.
@@ -471,109 +546,3 @@ var canvas = document.getElementById("canvasGame");
 
 // Adjuntamos nuestro sketch al framework de processing
 var processingInstance = new Processing(canvas, sketchProc);
-
-function maxScore(state) {
-  if (lookforCookies(state.pacman, state.cookies) == true) {
-    scoreGame(state.cookies[lookPositionCookies(state.pacman, state.cookies, 0)]);
-    const cookies = listDelete(state.cookies, state.cookies[lookPositionCookies(state.pacman, state.cookies, 0)]);
-    return Object.assign({}, state, {
-      cookies
-    });
-  }
-  return state;
-}
-/**pegue la funcion desde businessLogic directamente aqui por que no la estaba reconociendo al momento de hacer el llamado */
-/**
- * @author Vitor Alomia
- * @template (Object) => Object
- * @description Esta función busca las galleta mas cercana a pacman
- * @param {Object} pacman
- * @param {Object} cookies
- * @returns {Boolean}
- */
-function lookforCookies(pacman, cookies) {
-  if (isEmpty(cookies)) {
-    return false;
-  } else if (pacman.x == first(cookies).x && pacman.y == first(cookies).y) {
-    return true;
-  } else {
-    return lookforCookies(pacman, rest(cookies));
-  }
-}
-
-/**
- * @author Vitor Alomia
- * @template (Object) => Object
- * @description Esta función suma el valor de la galleta
- * @param {Object} pacman
- * @returns {Boolean}
- */
-function scoreGame(valor) {
-  console.log(score / 10 + " galletas comidas");
-  puntaje = document.getElementById("cookies");
-  puntaje.innerHTML = score;
-  score += 10;
-}
-
-/**
- * @author Vitor Alomia
- * @template (Object) => Object
- * @description buscar la posicion de la galleta
- * @param {Object} pacman
- * @param {Object} pacman
- * @param {Object} indice
- * @returns {Number}
- */
-function lookPositionCookies(pacman, cookies, indice) {
-
-  if (isEmpty(cookies)) {
-    return -1;
-  } else if (pacman.x == first(cookies).x && pacman.y == first(cookies).y) {
-    return indice;
-  } else {
-    return lookPositionCookies(pacman, rest(cookies), indice + 1);
-  }
-}
-
-//
-/**
- * @author Vitor Alomia
- * @template (Array) => Object
- * @description Esta función elimina la galleta a lo que el pacman está en la posicion de n
- * @param {Array} list
- * @param {Number} number
- * @returns {Array} l
- */
-function listDelete(list, number) {
-  if (number == length(list) - 1) {
-    return invertir(allLast(list))
-  }
-
-  function allLast(list, aux = []) {
-    if (length(list) == 1) {
-      return aux;
-    } else {
-      return allLast(rest(list), cons(first(list), aux))
-    }
-  }
-
-  function invertir(list, b = []) {
-    if (isEmpty(list)) {
-      return b;
-    } else {
-      return invertir(rest(list), cons(first(list), b));
-    }
-  }
-
-  function functionAux(list, number, lAux = [], indice = 0) {
-    if (isEmpty(list)) {
-      return invertir(lAux);
-    }
-    if (number == indice) {
-      return functionAux(rest(rest(list)), number, cons(first(rest(list)), lAux), indice + 1)
-    } else {
-      return functionAux(rest(list), number, cons(first(list), lAux), indice + 1)
-    }
-  }
-  return functionAux(list, number)
-}

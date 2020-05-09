@@ -2,6 +2,7 @@ body, html {
   background: linear-gradient(#142b40 0%, #6204b3 100%);
   color: rgb(85, 112, 236);
   margin: 0;
+  overflow: hidden;
 }
 
 body, html * {
@@ -52,7 +53,6 @@ td {
 }
 
 .scores {
-  margin-right: 50px;
   display: flex;
   flex-direction: row;
   justify-content: start;
@@ -90,11 +90,4 @@ td {
   justify-content: space-around;
   align-items: flex-end;
   margin-bottom: 5px;
-}
-
-#cookies {
-  position: absolute;
-  padding-right: 50px;
-  padding-left: 35px;
-  padding-bottom: 9px;
 }
