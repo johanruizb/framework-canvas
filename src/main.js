@@ -4,10 +4,10 @@ let yellow = null;
 let rose = null;
 
 function sketchProc(processing) {
-
+  fps = 10
   /** configuración inicial */
   processing.setup = function() {
-    processing.frameRate(10);
+    processing.frameRate(fps);
     processing.size(481, 481);
     processing.state = {
       width: processing.width,
@@ -231,6 +231,7 @@ function sketchProc(processing) {
         gluttony_mode: false,
         lifes: 3
       },
+      cooldown: 0,
       blue: {
         x: 240,
         y: 260,
@@ -357,6 +358,7 @@ function sketchProc(processing) {
       lifes: world.pacman.lifes
     }
     const vidas = document.getElementById('img_cherries');
+    const enfriamiento = document.getElementById('cd');
     if (world.blue.x == world.pacman.x && world.blue.y == world.pacman.y) {
       console.warn(world.pacman.lifes - 1 + " vidas");
       return make(world, {
@@ -373,6 +375,7 @@ function sketchProc(processing) {
           gluttony_mode: false,
           lifes: world.pacman.lifes - 1
         },
+        cooldown: 3 * fps,
         blue: {
           x: 240,
           y: 260,
@@ -390,9 +393,30 @@ function sketchProc(processing) {
       vidas.src = "images/vidas.png"
     }
     if (world.pacman.lifes == 0) {
-      return make(world, {})
+      enfriamiento.innerHTML = "Game!";
+      return make(world, {});
     }
-    /////////////////////////
+    //-----------Enfriamiento------------
+    if (world.pacman.lifes !== 0) {
+      if (world.cooldown == 3 * fps) {
+        enfriamiento.innerHTML = 3;
+      }
+      if (world.cooldown == 2 * fps) {
+        enfriamiento.innerHTML = 2;
+      }
+      if (world.cooldown == 1 * fps) {
+        enfriamiento.innerHTML = 1;
+      }
+      if (world.cooldown == 0) {
+        enfriamiento.innerHTML = "";
+      }
+      if (world.cooldown !== 0) {
+        return make(world, {
+          cooldown: world.cooldown - 1
+        })
+      }
+    }
+    //------------Fin------------
 
     if (done) return world;
     const next = fn.next();
