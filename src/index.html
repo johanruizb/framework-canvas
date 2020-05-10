@@ -1,7 +1,25 @@
 <title>Pacman!</title>
 <link rel="stylesheet" href="style.css">
 
+<script>
+  /*var aud = document.getElementById("soundtrack");
 
+  function enableAutoplay() {
+    aud.autoplay = true;
+    aud.load();
+  }*/
+  /*document.getElementById('soundtrack').click();
+  document.addEventListener('click', event => {
+    console.log('lo quese');
+    var audio = document.getElementById('soundtrack');
+    audio.muted = false;
+    audio.play();
+  });*/
+</script>
+
+<body onload="enableAutoplay()">
+
+</body>
 <div id="container">
   <img id="logo" draggable="false" src="images/logo-personalizado.png" alt="">
   <div>
@@ -13,11 +31,11 @@
     </div>
     <div class="scores">
       <img id="img_cherries" draggable="false" src="images/menu_cherry.png" alt="">
-      <span id="cherries" style="cursor: default;">0000</span>
+      <span id="cherries" style="cursor: default;">0</span>
     </div>
     <div class="scores">
       <img id="img_cookies" draggable="false" src="images/menu_cookie.png" alt="">
-      <span id="cookies" style="cursor: default;">00000</span>
+      <span id="cookies" style="cursor: default;">0</span>
     </div>
     <div class="btns">
       <img draggable="false" style="cursor: pointer;" src="images/boton_atras.png" alt="">
@@ -36,7 +54,6 @@
     </svg>
   </div>
 </div>
-
 <div class="cooldown">
   <span id="cd"></span>
 </div>
@@ -50,11 +67,8 @@
 </script>
 <script src="js/businessLogic.js"></script>
 <script src="js/MapFunctions.js"></script>
-<script src="main.js"></script>
-
-
-
-
+<script src="main.js">
+</script>
 <svg xmlns="http://www.w3.org/2000/svg" width="27.778" height="30" viewBox="0 0 27.778 30">
   <g id="Grupo_17" data-name="Grupo 17" transform="translate(337 -229)">
     <g id="Unión_1" data-name="Unión 1" transform="translate(-337 229)" fill="#1394cd">
@@ -77,14 +91,3 @@
     <circle id="Elipse_10" data-name="Elipse 10" cx="1.458" cy="1.458" r="1.458" transform="translate(-328.389 240.667)" />
   </g>
 </svg>
-
-<audio id="yourAudioTag" src="sounds/clock.mp3" muted loop>
-  <script>
-    document.getElementById('yourAudioTag').click();
-    document.addEventListener('click', event => {
-      console.log('lo quese');
-      var audio = document.getElementById('yourAudioTag');
-      audio.muted = false;
-      audio.play();
-    });
-  </script>

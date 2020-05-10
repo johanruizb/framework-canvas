@@ -29,6 +29,10 @@ img {
   margin-right: auto;
 }
 
+#playGame:hover {
+  filter: contrast(1.3);
+}
+
 .credits {
   display: inline-block;
   text-align: center;

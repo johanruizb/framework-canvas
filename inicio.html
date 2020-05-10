@@ -9,9 +9,12 @@
 </head>
 
 <body>
+  <audio id="soundtrack" src="src/sounds/soundtrack.mp3"></audio>
   <div class="contenedor">
     <img style="padding-top: 10%; width: 25%;" src="src/images/logo-personalizado.png" alt="">
-    <a href="src/index.html"><img style="width:90%;" src="src/images/boton_play.png" alt=""></a>
+    <a href="src/index.html"><img id="playGame" onmouseover="buttonSound()" style="width:90%;" src="src/images/boton_play.png" alt=""></a>
+    <audio id="buttonPlay" src="src/sounds/button.mp3#t=,1">
+    </audio>
   </div>
   <div>
     <svg xmlns="http://www.w3.org/2000/svg" width="110%" height="185.819" style="position: fixed; bottom: 0px; left: 0;z-index:0;">
@@ -21,6 +24,7 @@
   <div class="credits">
     <a href="src/creditos.html">Créditos</a>
   </div>
+  <script src="src/js/audioDriver.js"></script>
 </body>
 
 </html>
