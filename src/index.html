@@ -16,10 +16,8 @@
     audio.play();
   });*/
 </script>
+<audio id="soundtrack" src="sounds/Blue Sky Blues.mp3"></audio>
 
-<body onload="enableAutoplay()">
-
-</body>
 <div id="container">
   <img id="logo" draggable="false" src="images/logo-personalizado.png" alt="">
   <div>
@@ -38,17 +36,19 @@
       <span id="cookies" style="cursor: default;">0</span>
     </div>
     <div class="btns">
-      <img draggable="false" style="cursor: pointer;" src="images/boton_atras.png" alt="">
+      <img draggable="false" onclick="buttonSound();" style="cursor: pointer;" src="images/boton_atras.png" alt="">
       <span>Atras</span>
     </div>
     <div class="btns">
-      <img draggable="false" style="cursor: pointer;" src="images/boton_reiniciar.png" alt="">
+      <img draggable="false" onclick="buttonSound();" style="cursor: pointer;" src="images/boton_reiniciar.png" alt="">
       <span>Reiniciar</span>
     </div>
     <div class="btns">
-      <img id="img_game_state" draggable="false" onclick="ChangeImageGameState()" style="cursor: pointer;" src="images/boton_pausa.png" alt="">
+      <img id="img_game_state" draggable="false" onclick="ChangeImageGameState();buttonSound();" style="cursor: pointer;" src="images/boton_pausa.png" alt="">
       <span id="spn_game_state">Pausar</span>
     </div>
+    <audio id="buttonPlay" src="sounds/button.mp3#t=,1">
+    </audio>
     <svg xmlns="http://www.w3.org/2000/svg" width="110%" height="90" style="position: fixed;bottom: 0px;left: 0;">
       <path id="Trazado_1" data-name="Trazado 1" d="M.34-19.949,1366-59.969V20H0Z" transform="translate(0 79)" fill="#fff" />
     </svg>
@@ -91,3 +91,4 @@
     <circle id="Elipse_10" data-name="Elipse 10" cx="1.458" cy="1.458" r="1.458" transform="translate(-328.389 240.667)" />
   </g>
 </svg>
+<script src="js/audioDriver.js"></script>
