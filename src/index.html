@@ -1,22 +1,14 @@
 <title>Pacman!</title>
 <link rel="stylesheet" href="style.css">
 
-<script>
-  /*var aud = document.getElementById("soundtrack");
+<body id="prueba" onclick="">
 
-  function enableAutoplay() {
-    aud.autoplay = true;
-    aud.load();
-  }*/
-  /*document.getElementById('soundtrack').click();
-  document.addEventListener('click', event => {
-    console.log('lo quese');
-    var audio = document.getElementById('soundtrack');
-    audio.muted = false;
-    audio.play();
-  });*/
-</script>
-<audio id="soundtrack" src="sounds/Blue Sky Blues.mp3"></audio>
+</body>
+
+<audio id="caseteSound" src="sounds/casete.mp3"></audio>
+<audio id="buttonPlay" src="sounds/button.mp3#t=,1"></audio>
+<audio id="clock" src="sounds/clock.mp3#t=,2.5"></audio>
+<audio id="lifes" src="sounds/lifes.mp3#t=,1"></audio>
 
 <div id="container">
   <img id="logo" draggable="false" src="images/logo-personalizado.png" alt="">
@@ -47,8 +39,6 @@
       <img id="img_game_state" draggable="false" onclick="ChangeImageGameState();buttonSound();" style="cursor: pointer;" src="images/boton_pausa.png" alt="">
       <span id="spn_game_state">Pausar</span>
     </div>
-    <audio id="buttonPlay" src="sounds/button.mp3#t=,1">
-    </audio>
     <svg xmlns="http://www.w3.org/2000/svg" width="110%" height="90" style="position: fixed;bottom: 0px;left: 0;">
       <path id="Trazado_1" data-name="Trazado 1" d="M.34-19.949,1366-59.969V20H0Z" transform="translate(0 79)" fill="#fff" />
     </svg>

@@ -360,6 +360,7 @@ function sketchProc(processing) {
     const vidas = document.getElementById('img_cherries');
     const enfriamiento = document.getElementById('cd');
     if (world.blue.x == world.pacman.x && world.blue.y == world.pacman.y) {
+      lossOfLife();
       console.warn(world.pacman.lifes - 1 + " vidas");
       return make(world, {
         pacman: {
@@ -375,7 +376,7 @@ function sketchProc(processing) {
           gluttony_mode: false,
           lifes: world.pacman.lifes - 1
         },
-        cooldown: 3 * fps,
+        cooldown: 4 * fps,
         blue: {
           x: 240,
           y: 260,
@@ -398,6 +399,7 @@ function sketchProc(processing) {
     //-----------Enfriamiento------------
     if (world.pacman.lifes !== 0) {
       if (world.cooldown == 3 * fps) {
+        clockSound();
         enfriamiento.innerHTML = 3;
       }
       if (world.cooldown == 2 * fps) {

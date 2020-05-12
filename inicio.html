@@ -8,12 +8,13 @@
   <link rel="stylesheet" href="src/css/style_inicio.css">
 </head>
 
-<body id="prueba" onclick="music()">
+<body id="prueba" onclick="startMusic()">
 
+  <audio id="caseteSound" src="src/sounds/casete2.mp3"></audio>
   <audio id="blueSkyBlues" src="src/sounds/Blue Sky Blues.mp3" loop></audio>
   <audio id="reCreation" src="src/sounds/reCreation.mp3" loop></audio>
   <audio id="theStarsLookDifferent" src="src/sounds/The Stars Look Different.mp3" loop></audio>
-
+  <audio id="betweenWorlds" src="src/sounds/Between Worlds.mp3" loop></audio>
 
   <div class="contenedor">
     <img style="padding-top: 10%; width: 25%;" src="src/images/logo-personalizado.png" alt="">
@@ -21,14 +22,17 @@
     <audio id="buttonPlay" src="src/sounds/button.mp3#t=,1">
     </audio>
   </div>
+
   <div>
     <svg xmlns="http://www.w3.org/2000/svg" width="110%" height="185.819" style="position: fixed; bottom: 0px; left: 0;z-index:0;">
       <path id="Trazado_3" data-name="Trazado 3" d="M.34,33.022,1366-59.969V125.851H0Z" transform="translate(0 59.969)" fill="#fff" />
     </svg>
   </div>
+
   <div class="credits">
     <a href="src/creditos.html">Créditos</a>
   </div>
+
   <script src="src/js/audioDriver.js"></script>
 </body>
 
