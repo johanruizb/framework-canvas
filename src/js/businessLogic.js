@@ -332,7 +332,7 @@ function maxScore(state) {
 }
 /**pegue la funcion desde businessLogic directamente aquyi por que no la estaba reconociendo al momento de hacer el llamado */
 /**
- * @author Vitor Alomia
+ * @author Victor Alomia
  * @template (Object) => Object
  * @description Esta función busca las galleta mas cercana a pacman
  * @param {Object} pacman
@@ -374,6 +374,9 @@ function lookPositionCookies(pacman, cookies, indice) {
   if (isEmpty(cookies)) {
     return -1;
   } else if (pacman.x == first(cookies).x && pacman.y == first(cookies).y) {
+    //
+    crunchSound();
+    //
     return indice;
   } else {
     return lookPositionCookies(pacman, rest(cookies), indice + 1);

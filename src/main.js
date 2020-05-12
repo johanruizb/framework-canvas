@@ -394,11 +394,15 @@ function sketchProc(processing) {
       vidas.src = "images/vidas.png"
     }
     if (world.pacman.lifes == 0) {
+      enfriamiento.style.display = "inline";
+      enfriamiento.innerHTML = "Fin del juego!";
+      //musicGame(true);
       return make(world, {});
     }
     //-----------Enfriamiento------------
     if (world.pacman.lifes !== 0) {
       if (world.cooldown == 3 * fps) {
+        enfriamiento.style.display = "inline";
         clockSound();
         enfriamiento.innerHTML = 3;
       }
@@ -409,6 +413,7 @@ function sketchProc(processing) {
         enfriamiento.innerHTML = 1;
       }
       if (world.cooldown == 0) {
+        enfriamiento.style.display = "none";
         enfriamiento.innerHTML = "";
       }
       if (world.cooldown !== 0) {
