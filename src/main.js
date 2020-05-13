@@ -2,9 +2,9 @@ let blue = null;
 let red = null;
 let yellow = null;
 let rose = null;
+fps = 10
 
 function sketchProc(processing) {
-  fps = 10
   /** configuración inicial */
   processing.setup = function() {
     processing.frameRate(fps);
@@ -341,22 +341,10 @@ function sketchProc(processing) {
     yield ChangePosition;
     return maxScore;
   }
+
   // Actualiza el mundo despues de cada frame. En este ejemplo, no cambia nada, solo retorna una copia del mundo
   processing.onTic = function func(world, done = false, fn = OnTicGenerator()) {
     //------------Restar vidas y reposicionar elementos del juego------------
-    const initialPosition = {
-      mouth: false,
-      apertura: 20,
-      x: 240,
-      y: 140,
-      oldx: null,
-      oldy: null,
-      direction: 0,
-      NextDirection: 0,
-      rotate: 0,
-      gluttony_mode: false,
-      lifes: world.pacman.lifes
-    }
     const vidas = document.getElementById('img_cherries');
     const enfriamiento = document.getElementById('cd');
     if (world.blue.x == world.pacman.x && world.blue.y == world.pacman.y) {
@@ -396,7 +384,6 @@ function sketchProc(processing) {
     if (world.pacman.lifes == 0) {
       enfriamiento.style.display = "inline";
       enfriamiento.innerHTML = "Fin del juego!";
-      //musicGame(true);
       return make(world, {});
     }
     //-----------Enfriamiento------------
