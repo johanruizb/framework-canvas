@@ -1,3 +1,7 @@
+function make(data, attribute) {
+  return Object.assign({}, data, attribute);
+}
+
 /**
  * @template (object,number) => object
  * @description   Almacena la dirección en la que el usuario desea que se mueva el personaje
@@ -33,18 +37,90 @@ const ChangeDirection = function func(world, p = ['pacman', 'blue', 'yellow', 'r
   const name = first(p);
   const character = world[name];
 
-  if ((indexOf([37, 39], character.NextDirection) > -1 && (character.y / 2) % 2 == 0) ||
-    (indexOf([38, 40], character.NextDirection) > -1 && (character.x / 2) % 2 == 0)) {
+  // if (
+  //     (indexOf([37, 39], character.NextDirection) > -1 && character.y % 20 == 0) ||
+  //     (indexOf([38, 40], character.NextDirection) > -1 && character.x % 20 == 0)
+  // ) {
 
-    Object.assign(character, {
-      direction: character.NextDirection
-    });
-    const obj = eval(`Object({"${name}":${JSON.stringify(character)}})`);
-    return func(Object.assign({}, world, obj), rest(p));
+  // Object.assign(character, { direction: character.NextDirection });
+  // const obj = eval(`Object({"${name}":${JSON.stringify(character)}})`);
+  // return func(Object.assign({}, world, obj), rest(p));
+  // }
 
-  } else {
-    return func(world, rest(p));
+  // return func(world, rest(p));
+
+  if (character.NextDirection == 37) {
+
+    if (GetCollition(world.mapCoors, {
+        y1: character.y - 30,
+        y2: character.y + 30,
+        x1: character.x - 30
+      })) {
+      return func(world, rest(p));
+    } else {
+
+      Object.assign(character, {
+        direction: character.NextDirection
+      });
+      const obj = eval(`Object({"${name}":${JSON.stringify(character)}})`);
+      return func(Object.assign({}, world, obj), rest(p));
+    }
+
+    // Arriba
+  } else if (character.NextDirection == 38) {
+    if (GetCollition(world.mapCoors, {
+        x1: character.x - 30,
+        x2: character.x + 30,
+        y1: character.y - 30
+      })) {
+      return func(world, rest(p));
+    } else {
+      Object.assign(character, {
+        direction: character.NextDirection
+      });
+      const obj = eval(`Object({"${name}":${JSON.stringify(character)}})`);
+      return func(Object.assign({}, world, obj), rest(p));
+    }
+
+    // Derecha
+  } else if (character.NextDirection == 39) {
+
+    if (GetCollition(world.mapCoors, {
+        y1: character.y - 30,
+        y2: character.y + 30,
+        x1: character.x + 30
+      })) {
+
+      return func(world, rest(p));
+    } else {
+      Object.assign(character, {
+        direction: character.NextDirection
+      });
+      const obj = eval(`Object({"${name}":${JSON.stringify(character)}})`);
+      return func(Object.assign({}, world, obj), rest(p));
+    }
+
+    // Abajo
+  } else if (character.NextDirection == 40) {
+
+    if (GetCollition(world.mapCoors, {
+        x1: character.x - 30,
+        x2: character.x + 30,
+        y1: character.y + 30
+      })) {
+      return func(world, rest(p));
+    } else {
+      Object.assign(character, {
+        direction: character.NextDirection
+      });
+      const obj = eval(`Object({"${name}":${JSON.stringify(character)}})`);
+      return func(Object.assign({}, world, obj), rest(p));
+    }
+
   }
+
+  return func(world, rest(p));
+
 }
 
 /**
@@ -187,7 +263,6 @@ function MovingMouth(world) {
  */
 function SetCookieScore(world) {
   document.getElementById('cookies').innerText = world.current_score;
-  // document.getElementById('cherries').innerText = world.current_score;
 };
 
 /**
@@ -215,7 +290,7 @@ function ChangeImageGameState() {
  * @template (Object) => Object
  * @description Establece el movimiento de los fantasmas
  */
-const ChaseMode = function func(world, p = ['blue']) { // 'yellow', 'red', 'rose'
+const ChaseMode = function func(world, p = ['blue', 'yellow', 'red', 'rose']) {
 
   if (length(p) === 0) return world;
 
@@ -223,13 +298,18 @@ const ChaseMode = function func(world, p = ['blue']) { // 'yellow', 'red', 'rose
   const name = first(p);
   const ghost = world[name];
 
+  if (name == 'yellow') {
+    if (world.blue.x == ghost.x && world.blue.y == ghost.y) return func(world, rest(p));
+  } else if (name == 'red') {
+    if (world.yellow.x == ghost.x && world.yellow.y == ghost.y) return func(world, rest(p));
+  } else if (name == 'rose') {
+    if (world.red.x == ghost.x && world.red.y == ghost.y) return func(world, rest(p));
+  }
+
   // Determinar si cazar o huir
   if (!world.pacman.gluttony_mode && (ghost.x != world.pacman.x || ghost.y != world.pacman.y) && (ghost.x % 20 == 0 && ghost.y % 20 == 0)) {
-    //console.log(Array(10).join('~'));
-    //console.log('ghost', { x: ghost.x, y: ghost.y });
-    //console.log('ghost old', { x: ghost.oldx, y: ghost.oldy });
+
     const NextDirection = GetDirection(ghost, NextStep(RoouteMaker(world.cookiesMap, ghost, world.pacman)));
-    //console.log(NextDirection);
 
     Object.assign(ghost, {
       NextDirection
@@ -256,10 +336,7 @@ const RoouteMaker = function func(BaseCoors = [], character, target, RouteCoors 
   [0, 20]
 ]) {
 
-  if (length(sides) === 0) {
-    //console.log(RouteCoors);
-    return RouteCoors;
-  }
+  if (length(sides) === 0) return RouteCoors;
   s = first(sides)
   const index = GetIndexOf(BaseCoors, Function('x', 'y', 'return {x,y}')(character.x + s[0], character.y + s[1]))
 
@@ -286,14 +363,11 @@ const RoouteMaker = function func(BaseCoors = [], character, target, RouteCoors 
  */
 const NextStep = function func(options = [], bestOption) {
 
-  //console.log(bestOption);
   const a = first(options);
   if (length(options) <= 1) return !bestOption ? a : bestOption;
   const b = first(rest(options));
   return func(rest(options), a.steps < b.steps ? a : b);
 }
-
-
 
 /**
  * Retorna la dirección en la que el fantasma se moverá
@@ -314,25 +388,110 @@ const GetDirection = function func(ghost, option) {
     return x > 0 ? 39 : 37;
   return y > 0 ? 40 : 38;
 }
+/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Johan ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/**
+ * @author Johan Ruiz
+ * @template (Object) => Object
+ * @description Controla el ciclo de vidas de pacman
+ */
+
+const ChassingLifes = function func(world, p = ['blue', 'yellow', 'red', 'rose']) {
+
+  if (length(p) === 0) return world;
+
+  // Nombre y fantasma actual
+  const name = first(p);
+  const ghost = world[name];
+
+  const botonPausa = document.getElementById('img_game_state')
+  const vidas = document.getElementById('img_cherries');
+  const divCD = document.getElementById('cooldown');
+  const enfriamiento = document.getElementById('cd');
+
+  if (ghost.x == world.pacman.x && ghost.y == world.pacman.y && !world.pacman.gluttony_mode) {
+    ChangeImageGameState();
+    lossOfLife();
+    return func(Object.assign(world, initialState(world)), rest(p));
+  }
+  if (ghost.x == world.pacman.x && ghost.y == world.pacman.y && world.pacman.gluttony_mode) {
+    const ghostScore = scoreGame(world.current_score, 0, "ghost")
+    return Object.assign({}, world, {
+      current_score: ghostScore,
+    });
+    /*return make(world, {
+      current_score: world.current_score + 100
+    });*/
+  }
+
+  //Aqui se cambias la imagenes de las vidas que quedan
+  if (world.pacman.lifes == 2) {
+    vidas.src = "images/vidas_2.png";
+  }
+  if (world.pacman.lifes == 1) {
+    vidas.src = "images/vidas.png";
+  }
+  if (world.pacman.lifes == 0) {
+    botonPausa.onclick = "buttonSound();";
+    vidas.src = "images/sin_vidas.png";
+    divCD.style.display = "inline";
+    divCD.style.height = "auto";
+    enfriamiento.innerHTML = "Fin del juego!";
+  }
+  if (isEmpty(world.cookies)) {
+    botonPausa.onclick = "buttonSound();";
+    divCD.style.display = "inline";
+    divCD.style.height = "auto";
+    enfriamiento.innerHTML = "Fin del juego!";
+  }
+  //-----------Enfriamiento------------
+  if (world.pacman.lifes !== 0) {
+    if (world.cooldown == 3 * fps) {
+      divCD.style.display = "inline";
+      clockSound();
+      enfriamiento.innerHTML = 3;
+    }
+    if (world.cooldown == 2 * fps) {
+      enfriamiento.innerHTML = 2;
+    }
+    if (world.cooldown == 1 * fps) {
+      enfriamiento.innerHTML = 1;
+    }
+    if (world.cooldown == 0) {
+      ChangeImageGameState();
+      divCD.style.display = "none";
+      enfriamiento.innerHTML = "";
+    }
+    if (world.cooldown !== -1) {
+      return make(world, {
+        cooldown: world.cooldown - 1
+      });
+    }
+  }
+  //------------Fin------------
+  return func(make(world, {}), rest(p));
+}
 
 /** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Victor ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-function maxScore(state) {
-  if (lookforCookies(state.pacman, state.cookies) == true) {
-    const cookies = listDelete(state.cookies, lookPositionCookies(state.pacman, state.cookies, 0));
-    const current_score = scoreGame(state.current_score, state.cookies[lookPositionCookies(state.pacman, state.cookies, 0)]);
-    SetCookieScore(state);
-    return Object.assign({}, state, {
+function maxScore(world) {
+  if (lookforCookies(world.pacman, world.cookies) == true) {
+    const cookies = listDelete(world.cookies, lookPositionCookies(world.pacman, world.cookies, 0));
+    const current_score = scoreGame(world.current_score, world.cookies[lookPositionCookies(world.pacman, world.cookies, 0)], "cookies");
+    SetCookieScore(world);
+    return Object.assign({}, world, {
       cookies,
       current_score
     });
   }
-  return state;
+  return world;
 }
 /**pegue la funcion desde businessLogic directamente aquyi por que no la estaba reconociendo al momento de hacer el llamado */
 /**
- * @author Victor Alomia
+ * @author Vitor Alomia
  * @template (Object) => Object
  * @description Esta función busca las galleta mas cercana a pacman
  * @param {Object} pacman
@@ -356,8 +515,13 @@ function lookforCookies(pacman, cookies) {
  * @param {Object} pacman
  * @returns {Boolean}
  */
-function scoreGame(score, valor) {
-  return score += 10;
+function scoreGame(score, valor, type) {
+  if (type == "cookies") {
+    return score + 10;
+  }
+  if (type == "ghost") {
+    return score + 100;
+  }
 }
 
 /**
@@ -374,9 +538,7 @@ function lookPositionCookies(pacman, cookies, indice) {
   if (isEmpty(cookies)) {
     return -1;
   } else if (pacman.x == first(cookies).x && pacman.y == first(cookies).y) {
-    //
     crunchSound();
-    //
     return indice;
   } else {
     return lookPositionCookies(pacman, rest(cookies), indice + 1);
@@ -390,7 +552,7 @@ function lookPositionCookies(pacman, cookies, indice) {
  * @description Esta función elimina la galleta a lo que el pacman está en la posicion de n
  * @param {Array} list
  * @param {Number} number
- * @returns {Array} l
+ * @returns {Array}
  */
 function listDelete(list, number) {
   if (number == length(list) - 1) {
