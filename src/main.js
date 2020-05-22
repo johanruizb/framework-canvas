@@ -389,8 +389,8 @@ function sketchProc(processing) {
     //-----------Enfriamiento------------
     if (world.pacman.lifes !== 0) {
       if (world.cooldown == 3 * fps) {
-        enfriamiento.style.display = "inline";
         clockSound();
+        enfriamiento.style.display = "inline";
         enfriamiento.innerHTML = 3;
       }
       if (world.cooldown == 2 * fps) {
