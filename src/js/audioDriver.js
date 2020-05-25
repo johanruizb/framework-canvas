@@ -1,8 +1,5 @@
 /**
  * @author Johan R
- * @template () => void
- * @description Selecciona y reproduce aleatoriamente una cancion de fondo para la pantalla de inicio
- * @returns void
  */
 
 function startMusic() {
@@ -31,13 +28,6 @@ function startMusic() {
   }
 }
 
-/**
- * @author Johan R
- * @template () => void
- * @description Selecciona y reproduce aleatoriamente una cancion de fondo para la pantalla de juego
- * @returns void
- */
-
 function musicGame() {
   const seleccion = musicRandom();
   document.getElementById('sounds').onclick = "";
@@ -64,26 +54,12 @@ function musicGame() {
   }
 }
 
-/**
- * @author Johan R
- * @template () => void
- * @description Reproduce el sonido de un boton haciendo "clic"
- * @returns void
- */
-
 function buttonSound() {
   var aud = document.getElementById("bSound");
   aud.autoplay = true;
   aud.volume = 0.2;
   aud.load();
 }
-
-/**
- * @author Johan R
- * @template () => void
- * @description Reproduce un sonido al perder una vida
- * @returns void
- */
 
 function lossOfLife() {
   var aud = document.getElementById("effects");
@@ -93,13 +69,6 @@ function lossOfLife() {
   aud.load();
 }
 
-/**
- * @author Johan R
- * @template () => void
- * @description Reproduce el sonido de un reloj haciendo "tic,tac"
- * @returns void
- */
-
 function clockSound() {
   var aud = document.getElementById("effects");
   aud.src = "sounds/clock.mp3#t=,2.5";
@@ -108,24 +77,11 @@ function clockSound() {
   aud.load();
 }
 
-/**
- * @author Johan R
- * @template () => number
- * @description Devuelve un numero entero aleatorio entre 1 y 4
- * @returns number
- */
-
 function musicRandom() {
   return Math.floor((Math.random() * 4) + 1);
 }
 
-/**
- * @author Johan R
- * @template () => void
- * @description Reproduce el sonido de un "crunch" al comer una galleta
- * @returns void
- */
-
+//En duda por posibles molestias
 function crunchSound() {
   var aud = document.getElementById("effects");
   aud.src = "sounds/crunch.mp3";
@@ -133,3 +89,4 @@ function crunchSound() {
   aud.volume = 0.1;
   aud.load();
 }
+//-------

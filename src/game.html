@@ -1,6 +1,11 @@
 <link rel="stylesheet" href="style.css">
 
 <body id="sounds" onclick="musicGame()">
+  <head>
+    <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'>
+    <title>Pacman - Principal</title>
+  </head>
 </body>
 
 <audio id="sMusic" src="#" loop></audio>
@@ -18,22 +23,24 @@
   <!-- <button type="button" onclick="MapDownloader()" style="position: fixed;top: 50%;left: 20%;" >MapDownloader</button> -->
   <div class="footer">
     <div class="lifes">
-      <img id="img_cherries" draggable="false" width="130" src="images/vidas_3.png" alt="">
+      <img id="img_vidas" draggable="false" width="130" src="images/vidas_3.png" alt="">
     </div>
     <div class="scores">
       <img id="img_cherries" draggable="false" src="images/menu_cherry.png" alt="">
-      <span id="cherries" style="cursor: default;">0000</span>
+      <span id="cherries" style="cursor: default;">0</span>
     </div>
     <div class="scores">
       <img id="img_cookies" draggable="false" src="images/menu_cookie.png" alt="">
-      <span id="cookies" style="cursor: default;">00000</span>
+      <span id="cookies" style="cursor: default;">0</span>
     </div>
     <div class="btns">
-      <img draggable="false" onclick="buttonSound();" style="cursor: pointer;" src="images/boton_atras.png" alt="">
+      <img onclick="buttonSound();javascript:history.back();" draggable=" false" style="cursor: pointer;" src="images/boton_atras.png" alt="">
+      <!-- <img draggable="false" onclick="buttonSound();" style="cursor: pointer;" src="images/boton_atras.png" alt=""> -->
       <span>Atras</span>
     </div>
     <div class="btns">
-      <img draggable="false" onclick="buttonSound();" style="cursor: pointer;" src="images/boton_reiniciar.png" alt="">
+      <img onclick="buttonSound();javascript:location.reload();" draggable="false" style="cursor: pointer;" src="images/boton_reiniciar.png" alt="">
+      <!-- <img draggable="false" onclick="" style="cursor: pointer;" src="images/boton_reiniciar.png" alt=""> -->
       <span>Reiniciar</span>
     </div>
     <div class="btns">
